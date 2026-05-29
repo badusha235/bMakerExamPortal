@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #2563EB;
+  --color-brand-blue-soft: #E0F2FE;
+  --color-brand-blue-deep: #1E40AF;
+  --color-brand-blue-light: #93C5FD;
+  --color-brand-indigo: #6366F1;
+  --color-brand-cyan: #06B6D4;
+  --color-surface-soft: #F8FAFC;
+  --color-surface-card: #FFFFFF;
+  --color-accent-emerald: #10B981;
+  --color-accent-amber: #F59E0B;
+  --color-accent-rose: #F43F5E;
+  --color-accent-violet: #8B5CF6;
+  --color-accent-orange: #F97316;
+  --color-accent-teal: #14B8A6;
+  
+  --font-sans: var(--font-outfit), Inter, system-ui, sans-serif;
+  
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  
+  --shadow-premium: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  --shadow-glow: 0 0 40px -8px rgba(37, 99, 235, 0.3);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0F172A;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  scroll-behavior: smooth;
+}
+
+/* Glassmorphism Classes */
+.glass-morphism {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-morphism-dark {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Loading Skeleton Animation */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 2000px 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #2563EB 0%, #6366F1 50%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Pulsing Glow */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px -5px rgba(37, 99, 235, 0.3); }
+  50% { box-shadow: 0 0 30px -5px rgba(37, 99, 235, 0.5); }
+}
+
+.pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Float Animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* XP Bar Animation */
+@keyframes fill-bar {
+  from { width: 0%; }
+}
+
+.animate-fill-bar {
+  animation: fill-bar 1.5s ease-out forwards;
+}
+
+/* Progress Ring */
+@keyframes rotate-ring {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Chart container responsiveness */
+.recharts-responsive-container {
+  min-height: 200px;
+}
