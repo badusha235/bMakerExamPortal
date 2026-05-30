@@ -27,7 +27,7 @@ export default function AdminPapersPage() {
   const [filter, setFilter] = useState({ board: "", class: "" });
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/exams/question-papers/")
+    fetch("http://localhost:8000/api/exams/mock-tests/")
       .then(res => res.json())
       .then(data => {
         const list = Array.isArray(data) ? data : data.results ?? [];
@@ -48,14 +48,14 @@ export default function AdminPapersPage() {
       <main className="flex-1 ml-72 p-8 md:p-12">
         <header className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
           <div>
-            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Question <span className="text-brand-blue">Papers</span></h1>
-            <p className="text-slate-500 font-medium">Manage and organize historical exam papers.</p>
+            <h1 className="text-3xl font-black text-slate-900 tracking-tight">Mock <span className="text-brand-blue">Tests</span></h1>
+            <p className="text-slate-500 font-medium">Manage interactive online practice tests and exams.</p>
           </div>
           <Link 
             href="/admin/papers/add"
             className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-xl shadow-slate-900/10 active:scale-95 transition-transform"
           >
-            <Plus size={20} className="text-brand-blue" /> Upload New Paper
+            <Plus size={20} className="text-brand-blue" /> Create Mock Test
           </Link>
         </header>
 
@@ -125,13 +125,7 @@ export default function AdminPapersPage() {
                                <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
                                   <button className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-brand-blue hover:text-white transition-all"><Edit3 size={18} /></button>
                                   <button className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-rose-500 hover:text-white transition-all"><Trash2 size={18} /></button>
-                                  <a 
-                                    href={paper.pdf_file ? (paper.pdf_file.startsWith('http') ? paper.pdf_file : `http://localhost:8000${paper.pdf_file}`) : "#"} 
-                                    target="_blank" 
-                                    className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all"
-                                  >
-                                    <ExternalLink size={18} />
-                                  </a>
+                                  <a href={paper.pdf_file} target="_blank" className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all"><ExternalLink size={18} /></a>
                                </div>
                             </td>
                          </tr>

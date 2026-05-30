@@ -125,13 +125,7 @@ export default function AdminPapersPage() {
                                <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
                                   <button className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-brand-blue hover:text-white transition-all"><Edit3 size={18} /></button>
                                   <button className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-rose-500 hover:text-white transition-all"><Trash2 size={18} /></button>
-                                  <a 
-                                    href={paper.pdf_file ? (paper.pdf_file.startsWith('http') ? paper.pdf_file : `http://localhost:8000${paper.pdf_file}`) : "#"} 
-                                    target="_blank" 
-                                    className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all"
-                                  >
-                                    <ExternalLink size={18} />
-                                  </a>
+                                  <a href={paper.pdf_file} target="_blank" className="h-10 w-10 flex items-center justify-center bg-slate-50 text-slate-400 rounded-xl hover:bg-slate-900 hover:text-white transition-all"><ExternalLink size={18} /></a>
                                </div>
                             </td>
                          </tr>

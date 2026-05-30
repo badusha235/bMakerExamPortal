@@ -10,15 +10,17 @@ import {
   Settings, 
   LogOut, 
   BookOpen,
-  Bell
+  Bell,
+  Zap
 } from "lucide-react";
 
 const MENU_ITEMS = [
-  { name: "Overview", icon: LayoutDashboard, href: "/admin/dashboard" },
+  { name: "Dashboard", icon: LayoutDashboard, href: "/admin/dashboard" },
   { name: "Question Papers", icon: FileText, href: "/admin/papers" },
-  { name: "Subjects", icon: BookOpen, href: "/admin/subjects" },
-  { name: "Notifications", icon: Bell, href: "/admin/notifications" },
-  { name: "User Access", icon: Users, href: "/admin/users" },
+  { name: "Study Notes", icon: BookOpen, href: "/admin/notes" },
+  { name: "Mock Tests", icon: Zap, href: "/admin/mock-tests" },
+  { name: "Study Materials", icon: LayoutDashboard, href: "/admin/materials" },
+  { name: "Important Topics", icon: Bell, href: "/admin/important-topics" },
   { name: "Settings", icon: Settings, href: "/admin/settings" },
 ];
 
