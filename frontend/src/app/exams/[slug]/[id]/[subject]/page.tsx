@@ -7,13 +7,23 @@ import {
   BookOpen,
   FileText,
   Zap,
-  Target,
   Download,
   Eye,
   Search,
   Filter,
-  Calendar,
+  Calculator,
+  Beaker,
+  FlaskConical,
+  Dna,
+  Languages,
+  Map,
+  Monitor,
   Loader2,
+  ChevronRight,
+  TrendingUp,
+  LayoutTemplate,
+  CheckCircle,
+  Lightbulb,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
@@ -24,9 +34,13 @@ interface QuestionPaper {
   id: number;
   title: string;
   year: number;
-  exam_type: string; // "ANNUAL" | "MODEL" | "SUPPLEMENTARY"
+  exam_type: string;
   subject_name: string;
   pdf_file: string | null;
+  marks?: number;
+  pages?: number;
+  duration?: string;
+  is_new?: boolean;
 }
 
 interface Chapter {
@@ -35,46 +49,51 @@ interface Chapter {
   order: number;
 }
 
-type TabType = "notes" | "papers" | "tests";
-
-const EXAM_TYPE_LABEL: Record<string, string> = {
-  ANNUAL: "Annual Exam",
-  MODEL: "Model Exam",
-};
-
-const TESTS_DATA = [
-  { title: "Chapter 1: Full Quiz", questions: 20, time: "30m", taken: true, score: "18/20" },
-  { title: "Term 1 Mock Exam", questions: 40, time: "60m", taken: false },
-];
+type TabType = "overview" | "chapters" | "notes" | "papers" | "tests";
 
 // ─── Component ──────────────────────────────────────────────────────────────
 export default function SubjectModularDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const slug = params.slug as string;          // e.g. "sslc"
-  const id = params.id as string;              // e.g. "state"
-  const subjectId = params.subject as string;  // e.g. "physics", "chemistry"
+  const slug = params.slug as string;          
+  const id = params.id as string;              
+  const subjectId = params.subject as string;  
 
-  const [activeTab, setActiveTab] = useState<TabType>("notes");
-  const [yearFilter, setYearFilter] = useState<string>("All");
-  const [typeFilter, setTypeFilter] = useState<string>("All");
+  const [activeTab, setActiveTab] = useState<TabType>("papers");
+  const [yearFilter, setYearFilter] = useState<string>("All Years");
   const [searchQuery, setSearchQuery] = useState("");
 
   // API data
   const [papers, setPapers] = useState<QuestionPaper[]>([]);
   const [chapters, setChapters] = useState<Chapter[]>([]);
+  const [subjectData, setSubjectData] = useState<any>(null);
   const [loadingPapers, setLoadingPapers] = useState(false);
-  const [loadingChapters, setLoadingChapters] = useState(false);
 
-  const subjectName = subjectId
-    ? subjectId
-        .split("-")
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" ")
-    : "Subject";
-  const boardName = id === "state" ? "Kerala State Syllabus" : id.toUpperCase();
+  // Derive simple display names
+  const subjectName = subjectData?.name || (subjectId
+    ? subjectId.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ")
+    : "Subject");
+  const boardName = subjectData?.exam_name || (id === "state" ? "Kerala State Syllabus" : id.toUpperCase());
 
-  // Fetch Question Papers for THIS subject only
+  // Dynamic icon
+  const ICON_MAP: Record<string, any> = {
+    Calculator, Beaker, FlaskConical, Dna, Languages, BookOpen, Map, Monitor, FileText
+  };
+  const SubjectIcon = ICON_MAP[subjectData?.icon_name] ?? Calculator;
+
+  // Fetch Subject Data
+  useEffect(() => {
+    if (!subjectId) return;
+    fetch(`http://localhost:8000/api/exams/subjects/?slug=${subjectId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const results = Array.isArray(data) ? data : data.results ?? [];
+        if (results.length > 0) setSubjectData(results[0]);
+      })
+      .catch(console.error);
+  }, [subjectId]);
+
+  // Fetch Question Papers
   useEffect(() => {
     if (!subjectId) return;
     setLoadingPapers(true);
@@ -88,282 +107,268 @@ export default function SubjectModularDetailPage() {
       .finally(() => setLoadingPapers(false));
   }, [subjectId]);
 
-  // Fetch Chapters for THIS subject only
-  useEffect(() => {
-    if (!subjectId) return;
-    setLoadingChapters(true);
-    fetch(`http://localhost:8000/api/exams/chapters/?subject_slug=${subjectId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const results = Array.isArray(data) ? data : data.results ?? [];
-        setChapters(results);
-      })
-      .catch(() => setChapters([]))
-      .finally(() => setLoadingChapters(false));
-  }, [subjectId]);
-
-  // Derive unique years from fetched papers
-  const availableYears = ["All", ...Array.from(new Set(papers.map((p) => p.year.toString()))).sort((a, b) => Number(b) - Number(a))];
-  const types = ["All", "Annual Exam", "Model Exam"];
+  const yearOptions = ["All Years", "2025", "2024", "2023", "2022", "2021", "More"];
 
   const filteredPapers = papers.filter((paper) => {
-    const typeLabel = EXAM_TYPE_LABEL[paper.exam_type] ?? paper.exam_type;
-    const matchesYear = yearFilter === "All" || paper.year.toString() === yearFilter;
-    const matchesType = typeFilter === "All" || typeLabel === typeFilter;
+    const matchesYear = yearFilter === "All Years" || paper.year.toString() === yearFilter || (yearFilter === "More" && paper.year < 2021);
     const matchesSearch = paper.title.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesYear && matchesType && matchesSearch;
+    return matchesYear && matchesSearch;
   });
 
-  const filteredChapters = chapters.filter((c) =>
-    c.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <main className="min-h-screen bg-slate-50">
+    <main className="min-h-screen bg-[#F8FAFC]">
       <Navbar />
 
-      <section className="pt-32 pb-20">
-        <div className="container mx-auto px-4 lg:px-6">
-          {/* Back button */}
-          <div className="mb-8">
+      <section className="pt-28 pb-20">
+        <div className="container mx-auto px-4 lg:px-8 max-w-7xl">
+          {/* Back Button */}
+          <div className="mb-6">
             <button
               onClick={() => router.back()}
-              className="flex items-center gap-2 text-slate-400 hover:text-brand-blue transition-colors font-semibold"
+              className="flex items-center gap-2 text-slate-500 hover:text-brand-blue transition-colors text-sm font-semibold"
             >
-              <ArrowLeft size={18} /> Back to Subjects
+              <ArrowLeft size={16} strokeWidth={2.5} /> Back to {boardName}
             </button>
           </div>
 
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-2">{subjectName}</h1>
-              <p className="text-slate-500 font-medium">
-                {boardName} • {slug.toUpperCase()}
-              </p>
-            </div>
-            <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-4">
-              <div className="h-10 w-10 bg-brand-blue/10 rounded-xl flex items-center justify-center text-brand-blue">
-                <Target size={20} />
-              </div>
-              <div>
-                <p className="text-[10px] text-slate-400 font-bold uppercase mb-1">Status</p>
-                <p className="text-sm font-bold text-slate-900 leading-none">In Progress</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="flex flex-wrap gap-2 mb-10 bg-white p-2 rounded-2xl border border-slate-100 shadow-sm w-fit">
-            {(["notes", "papers", "tests"] as TabType[]).map((tab) => (
-              <button
-                key={tab}
-                onClick={() => { setActiveTab(tab); setSearchQuery(""); }}
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all ${
-                  activeTab === tab ? "bg-brand-blue text-white shadow-lg" : "text-slate-500 hover:bg-slate-50"
-                }`}
-              >
-                {tab === "notes" && <BookOpen size={18} />}
-                {tab === "papers" && <FileText size={18} />}
-                {tab === "tests" && <Zap size={18} />}
-                {tab === "notes" ? "Notes" : tab === "papers" ? "Question Papers" : "Mock Tests"}
-              </button>
-            ))}
-          </div>
-
-          {/* Content */}
-          <div className="max-w-5xl">
-            {/* Search bar */}
-            {(activeTab === "notes" || activeTab === "papers") && (
-              <div className="relative mb-8 max-w-xl group">
-                <Search
-                  className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-brand-blue transition-colors"
-                  size={20}
-                />
-                <input
-                  type="text"
-                  placeholder={`Search in ${activeTab === "notes" ? "Notes" : "Question Papers"}...`}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-blue/5 focus:border-brand-blue shadow-sm transition-all text-sm font-medium"
-                />
-              </div>
-            )}
-
-            <AnimatePresence mode="wait">
-              {/* ── Notes Tab ── */}
-              {activeTab === "notes" && (
-                <motion.div
-                  key="notes"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="space-y-4"
-                >
-                  {loadingChapters ? (
-                    <div className="flex justify-center py-20">
-                      <Loader2 className="animate-spin text-brand-blue" size={32} />
-                    </div>
-                  ) : filteredChapters.length === 0 ? (
-                    <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-slate-200">
-                      <BookOpen size={40} className="mx-auto text-slate-300 mb-3" />
-                      <p className="text-slate-400 font-medium">No chapters available yet for {subjectName}.</p>
-                    </div>
-                  ) : (
-                    filteredChapters.map((chapter) => (
-                      <div key={chapter.id} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:border-brand-blue/20 transition-all">
-                        <h3 className="font-bold text-slate-900">{chapter.title}</h3>
-                      </div>
-                    ))
-                  )}
-                </motion.div>
-              )}
-
-              {/* ── Question Papers Tab ── */}
-              {activeTab === "papers" && (
-                <motion.div
-                  key="papers"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                >
-                  {/* Filters */}
-                  <div className="flex flex-col md:flex-row gap-4 mb-8">
-                    <div className="flex-1 flex gap-4">
-                      <div className="flex-1 bg-white p-2 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-2 px-4 focus-within:border-brand-blue transition-colors">
-                        <Calendar size={18} className="text-slate-400" />
-                        <select
-                          value={yearFilter}
-                          onChange={(e) => setYearFilter(e.target.value)}
-                          className="bg-transparent text-sm font-bold text-slate-700 outline-none w-full"
-                        >
-                          {availableYears.map((y) => (
-                            <option key={y} value={y}>{y === "All" ? "All Years" : y}</option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="flex-1 bg-white p-2 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-2 px-4 focus-within:border-brand-blue transition-colors">
-                        <Filter size={18} className="text-slate-400" />
-                        <select
-                          value={typeFilter}
-                          onChange={(e) => setTypeFilter(e.target.value)}
-                          className="bg-transparent text-sm font-bold text-slate-700 outline-none w-full"
-                        >
-                          {types.map((t) => (
-                            <option key={t} value={t}>{t === "All" ? "All Types" : t}</option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
+          {/* Header Block */}
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-10">
+            <div className="flex items-center gap-6">
+               <div className="h-20 w-20 bg-blue-100 rounded-3xl flex items-center justify-center text-blue-600 shadow-sm border border-blue-200/50">
+                 <SubjectIcon size={36} strokeWidth={2} />
+               </div>
+               <div>
+                  <h1 className="text-4xl font-bold text-slate-900 mb-2 tracking-tight">{subjectName}</h1>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="flex items-center gap-1.5 px-2.5 py-1 bg-brand-blue/10 text-brand-blue text-[11px] font-bold uppercase tracking-wider rounded-full">
+                       <Zap size={12} fill="currentColor" /> {boardName}
+                    </span>
                   </div>
+                  <p className="text-slate-500 text-sm font-medium">Access Question Papers, Notes, and Mock Tests for {subjectName}.</p>
+               </div>
+            </div>
 
-                  {loadingPapers ? (
-                    <div className="flex justify-center py-20">
-                      <Loader2 className="animate-spin text-brand-blue" size={32} />
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {filteredPapers.map((paper) => {
-                        const typeLabel = EXAM_TYPE_LABEL[paper.exam_type] ?? paper.exam_type;
-                        const isAnnual = paper.exam_type === "ANNUAL";
-                        return (
-                          <div
-                            key={paper.id}
-                            className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:border-brand-blue/20 transition-all group overflow-hidden relative"
-                          >
-                            <div className="flex justify-between items-start mb-6">
-                              <div className="p-3 bg-brand-blue/10 rounded-2xl text-brand-blue">
-                                <FileText size={20} />
-                              </div>
-                              <span
-                                className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-widest ${
-                                  isAnnual
-                                    ? "bg-amber-100 text-amber-700 border border-amber-200"
-                                    : "bg-indigo-100 text-indigo-700 border border-indigo-200"
-                                }`}
-                              >
-                                {typeLabel}
-                              </span>
-                            </div>
-                            <h3 className="text-xl font-bold mb-2 text-slate-900">{paper.title}</h3>
-                            <p className="text-sm text-slate-400 mb-6 font-medium">{paper.year}</p>
-                            <div className="flex gap-2">
-                              {paper.pdf_file ? (
-                                <a
-                                  href={`http://localhost:8000${paper.pdf_file}`}
-                                  download
-                                  className="flex-1 py-3 bg-brand-blue text-white rounded-xl text-xs font-bold shadow-lg shadow-brand-blue/10 flex items-center justify-center gap-2 hover:opacity-90 transition-all"
-                                >
-                                  <Download size={14} /> Download PDF
-                                </a>
-                              ) : (
-                                <span className="flex-1 py-3 bg-slate-100 text-slate-400 rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-not-allowed">
-                                  <Download size={14} /> No PDF Yet
-                                </span>
-                              )}
-                              {paper.pdf_file && (
-                                <a
-                                  href={`http://localhost:8000${paper.pdf_file}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex-1 py-3 bg-slate-50 text-slate-600 rounded-xl text-xs font-bold flex items-center justify-center gap-2 hover:bg-slate-100 transition-colors"
-                                >
-                                  <Eye size={14} /> View Online
-                                </a>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {filteredPapers.length === 0 && (
-                        <div className="md:col-span-2 text-center py-20 bg-white rounded-3xl border border-dashed border-slate-200">
-                          <FileText size={40} className="mx-auto text-slate-300 mb-3" />
-                          <p className="text-slate-400 font-medium tracking-tight">
-                            No question papers found for <span className="text-brand-blue font-bold">{subjectName}</span>.
-                          </p>
-                          <p className="text-slate-300 text-sm mt-1">Papers added by admin will appear here.</p>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </motion.div>
-              )}
+            {/* Stats Block */}
+            <div className="flex items-center gap-8 md:gap-12 bg-white px-8 py-5 rounded-3xl shadow-sm border border-slate-100/50">
+               <div className="text-center">
+                 <p className="text-2xl font-bold text-slate-800">24</p>
+                 <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Chapters</p>
+               </div>
+               <div className="text-center">
+                 <p className="text-2xl font-bold text-slate-800">320+</p>
+                 <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Notes</p>
+               </div>
+               <div className="text-center">
+                 <p className="text-2xl font-bold text-slate-800">150+</p>
+                 <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Mock Tests</p>
+               </div>
+               <div className="text-center">
+                 <p className="text-2xl font-bold text-slate-800">11</p>
+                 <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Question Papers</p>
+               </div>
+            </div>
+          </div>
 
-              {/* ── Mock Tests Tab ── */}
-              {activeTab === "tests" && (
-                <motion.div
-                  key="tests"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  className="space-y-4"
-                >
-                  {TESTS_DATA.map((test, i) => (
-                    <div key={i} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-4">
-                        <div className={`h-12 w-12 rounded-2xl flex items-center justify-center ${test.taken ? "bg-emerald-100 text-emerald-600" : "bg-brand-blue/5 text-brand-blue"}`}>
-                          <Zap size={24} fill={test.taken ? "currentColor" : "none"} />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-slate-900">{test.title}</h4>
-                          <span className="text-xs text-slate-400 font-medium">{test.questions} Qs • {test.time}</span>
-                        </div>
+          {/* Underlined Tabs */}
+          <div className="flex items-center gap-8 border-b border-slate-200 mb-8 overflow-x-auto scrollbar-hide">
+             {(["overview", "chapters", "notes", "papers", "tests"] as TabType[]).map((tab) => {
+                const labels: Record<string, string> = {
+                  overview: "Overview", chapters: "Chapters", notes: "Notes", papers: "Question Papers", tests: "Mock Tests"
+                };
+                return (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`whitespace-nowrap px-2 py-4 text-sm font-bold transition-all relative ${
+                      activeTab === tab ? "text-brand-blue" : "text-slate-500 hover:text-slate-800"
+                    }`}
+                  >
+                    {labels[tab]}
+                    {activeTab === tab && (
+                      <motion.div layoutId="activetab" className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue" />
+                    )}
+                  </button>
+                )
+             })}
+          </div>
+
+          {/* Dual Pane Layout */}
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Left Content (Main) */}
+            <div className="flex-1">
+               {/* Search & Filter Bar */}
+               <div className="flex flex-col sm:flex-row items-center gap-4 mb-10">
+                  <div className="relative flex-1 w-full group">
+                     <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 transition-colors group-focus-within:text-brand-blue" size={20} />
+                     <input 
+                       type="text" 
+                       placeholder={`Search ${activeTab === 'papers' ? 'Question Papers' : 'Content'}...`}
+                       value={searchQuery}
+                       onChange={(e) => setSearchQuery(e.target.value)}
+                       className="w-full pl-12 pr-6 py-4 bg-white border border-slate-200 rounded-full focus:outline-none focus:ring-4 focus:ring-brand-blue/5 focus:border-brand-blue shadow-sm transition-all text-sm font-medium"
+                     />
+                  </div>
+                  <button className="flex items-center gap-2 px-6 py-4 bg-white border border-slate-200 rounded-full shadow-sm text-sm font-bold text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all whitespace-nowrap">
+                    <Filter size={18} /> Filters
+                  </button>
+               </div>
+
+               <AnimatePresence mode="wait">
+                 {activeTab === "papers" && (
+                   <motion.div key="papers" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                      <h2 className="text-2xl font-bold text-slate-900 mb-6 tracking-tight">Question Papers</h2>
+                      
+                      {/* Sub-tabs / Pills for Years */}
+                      <div className="flex flex-wrap items-center gap-3 mb-8">
+                         {yearOptions.map((year, i) => (
+                           <button
+                             key={i}
+                             onClick={() => setYearFilter(year)}
+                             className={`px-5 py-2.5 rounded-2xl text-sm font-bold transition-all ${
+                               yearFilter === year 
+                                ? "bg-blue-100 text-blue-700 shadow-inner" 
+                                : "bg-white text-slate-500 border border-slate-200 hover:bg-slate-50 uppercase tracking-wide"
+                             }`}
+                           >
+                             {year} {year === "All Years" || year === "More" ? " ⌄" : ""}
+                           </button>
+                         ))}
                       </div>
-                      <button
-                        onClick={() => router.push("/mock-tests/active")}
-                        className={`px-6 py-3 rounded-xl text-xs font-bold transition-all ${
-                          test.taken
-                            ? "border border-slate-100 text-slate-600 hover:bg-slate-50"
-                            : "bg-brand-blue text-white shadow-lg shadow-brand-blue/10"
-                        }`}
-                      >
-                        {"score" in test && test.taken ? `Retake (${test.score})` : "Start Test"}
-                      </button>
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+
+                      {/* Paper List */}
+                      {loadingPapers ? (
+                         <div className="flex justify-center py-20">
+                            <Loader2 className="animate-spin text-brand-blue" size={40} />
+                         </div>
+                      ) : (
+                         <div className="space-y-4">
+                            {filteredPapers.map((paper, idx) => (
+                              <div key={paper.id} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:border-brand-blue/30 transition-all flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
+                                 {/* Highlight line */}
+                                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-brand-blue transition-colors"></div>
+
+                                 <div className="flex items-center gap-5 w-full md:w-auto">
+                                    <div className="h-14 w-14 border border-rose-100 bg-rose-50 text-rose-500 rounded-2xl flex flex-col items-center justify-center shrink-0 shadow-sm relative">
+                                      <FileText size={22} />
+                                      <span className="absolute -bottom-2 bg-rose-500 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-full shadow-sm">PDF</span>
+                                    </div>
+                                    <div>
+                                       <h3 className="text-base font-bold text-slate-900 mb-1">{paper.title}</h3>
+                                       <div className="flex items-center text-[11px] font-semibold text-slate-500">
+                                         <span>Total Marks: {paper.marks || 80}</span>
+                                         <span className="mx-2 text-slate-300">•</span>
+                                         <span>Pages: {paper.pages || 16}</span>
+                                         <span className="mx-2 text-slate-300">•</span>
+                                         <span>Duration: {paper.duration || '2.5 hrs'}</span>
+                                       </div>
+                                    </div>
+                                 </div>
+
+                                 {/* Action Buttons */}
+                                 <div className="flex items-center gap-3 w-full md:w-auto mt-2 md:mt-0">
+                                    {idx === 0 && <span className="absolute top-4 right-4 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase px-2 py-1 rounded-lg border border-emerald-100">New</span>}
+                                    <button className="flex-1 md:flex-none px-6 py-3 border border-slate-200 text-brand-blue font-bold text-xs rounded-full hover:bg-slate-50 transition-colors">
+                                       View Online
+                                    </button>
+                                    <a 
+                                      href={paper.pdf_file ? `http://localhost:8000${paper.pdf_file}` : "#"} 
+                                      className="flex-1 md:flex-none px-6 py-3 bg-brand-blue text-white font-bold text-xs rounded-full shadow-md shadow-brand-blue/20 flex items-center justify-center gap-2 hover:bg-blue-700 transition-all"
+                                    >
+                                       <Download size={14} /> Download
+                                    </a>
+                                 </div>
+                              </div>
+                            ))}
+
+                            {filteredPapers.length === 0 && (
+                              <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-200">
+                                <Search className="mx-auto text-slate-300 mb-4" size={48} />
+                                <h3 className="text-xl font-bold text-slate-800 mb-1">No question papers found</h3>
+                                <p className="text-slate-500">Try adjusting your filters or search term.</p>
+                              </div>
+                            )}
+                         </div>
+                      )}
+                   </motion.div>
+                 )}
+
+                 {/* Placeholders for other tabs */}
+                 {activeTab !== "papers" && (
+                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center bg-white rounded-3xl border border-slate-100">
+                      <LayoutTemplate size={48} className="mx-auto text-slate-200 mb-4" />
+                      <h3 className="text-xl font-bold text-slate-800 mb-2 capitalize">{activeTab} section</h3>
+                      <p className="text-slate-500">This content is currently being prepared by our educators.</p>
+                   </motion.div>
+                 )}
+               </AnimatePresence>
+            </div>
+
+            {/* Right Sidebar */}
+            <div className="w-full lg:w-80 flex flex-col gap-6">
+               {/* Quick Access Card */}
+               <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                  <h3 className="text-sm font-bold text-slate-900 mb-4 tracking-tight">Quick Access</h3>
+                  <div className="space-y-1">
+                     {[
+                       { label: "Important Topics", icon: Lightbulb, color: "text-emerald-500", bg: "bg-emerald-50" },
+                       { label: "Most Asked Questions", icon: Zap, color: "text-blue-500", bg: "bg-blue-50" },
+                       { label: "Answer Keys", icon: CheckCircle, color: "text-amber-500", bg: "bg-amber-50" },
+                       { label: "Exam Pattern", icon: LayoutTemplate, color: "text-rose-500", bg: "bg-rose-50" },
+                     ].map((item, i) => (
+                       <button key={i} className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                          <div className="flex items-center gap-3">
+                             <div className={`h-8 w-8 ${item.bg} ${item.color} rounded-xl flex items-center justify-center`}>
+                               <item.icon size={16} />
+                             </div>
+                             <span className="text-sm font-semibold text-slate-700 group-hover:text-brand-blue transition-colors">{item.label}</span>
+                          </div>
+                          <ChevronRight size={16} className="text-slate-300 group-hover:text-brand-blue" />
+                       </button>
+                     ))}
+                  </div>
+               </div>
+
+               {/* Year Range Card */}
+               <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                  <h3 className="text-sm font-bold text-slate-900 mb-6 tracking-tight">Year Range</h3>
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-3">
+                     <span>2015</span>
+                     <span>2025</span>
+                  </div>
+                  {/* Visual Range Slider Mockup */}
+                  <div className="relative h-1.5 bg-slate-100 rounded-full">
+                     <div className="absolute left-[10%] right-[10%] h-full bg-brand-blue rounded-full"></div>
+                     <div className="absolute left-[10%] top-1/2 -translate-y-1/2 h-4 w-4 bg-brand-blue border-2 border-white rounded-full shadow-sm cursor-grab"></div>
+                     <div className="absolute right-[10%] top-1/2 -translate-y-1/2 h-4 w-4 bg-brand-blue border-2 border-white rounded-full shadow-sm cursor-grab"></div>
+                  </div>
+               </div>
+
+               {/* Difficulty Level Card */}
+               <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                  <h3 className="text-sm font-bold text-slate-900 mb-4 tracking-tight">Difficulty Level</h3>
+                  <div className="space-y-3">
+                     <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="h-4 w-4 rounded-full border border-slate-200 flex items-center justify-center group-hover:border-emerald-500">
+                           <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">Easy</span>
+                     </label>
+                     <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="h-4 w-4 rounded-full border border-slate-200 flex items-center justify-center group-hover:border-amber-500">
+                           <div className="h-2 w-2 rounded-full bg-amber-500"></div>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">Medium</span>
+                     </label>
+                     <label className="flex items-center gap-3 cursor-pointer group">
+                        <div className="h-4 w-4 rounded-full border border-slate-200 flex items-center justify-center group-hover:border-rose-500">
+                           <div className="h-2 w-2 rounded-full bg-rose-500"></div>
+                        </div>
+                        <span className="text-sm font-medium text-slate-700">Difficult</span>
+                     </label>
+                  </div>
+               </div>
+            </div>
+
           </div>
         </div>
       </section>
