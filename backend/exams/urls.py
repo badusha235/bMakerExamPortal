@@ -1,23 +1,17 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
-    CategoryViewSet, 
-    ExamViewSet, 
-    NotificationViewSet, 
-    StudyMaterialViewSet,
-    SubjectViewSet,
-    QuestionPaperViewSet,
-    ChapterViewSet
+    SubjectViewSet, QuestionPaperViewSet, NoteViewSet, 
+    MockTestViewSet, StudyMaterialViewSet, ImportantTopicViewSet
 )
 
 router = DefaultRouter()
-router.register(r'categories', CategoryViewSet)
-router.register(r'exams', ExamViewSet, basename='exam')
-router.register(r'notifications', NotificationViewSet)
+router.register(r'subjects', SubjectViewSet)
+router.register(r'question-papers', QuestionPaperViewSet)
+router.register(r'notes', NoteViewSet)
+router.register(r'mock-tests', MockTestViewSet)
 router.register(r'study-materials', StudyMaterialViewSet)
-router.register(r'subjects', SubjectViewSet, basename='subject')
-router.register(r'question-papers', QuestionPaperViewSet, basename='questionpaper')
-router.register(r'chapters', ChapterViewSet, basename='chapter')
+router.register(r'important-topics', ImportantTopicViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
