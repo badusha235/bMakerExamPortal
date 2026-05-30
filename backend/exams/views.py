@@ -17,10 +17,16 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class ExamViewSet(viewsets.ModelViewSet):
-    queryset = Exam.objects.all()
     serializer_class = ExamSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name', 'category__name']
+
+    def get_queryset(self):
+        queryset = Exam.objects.all()
+        slug = self.request.query_params.get('slug')
+        if slug:
+            queryset = queryset.filter(slug=slug)
+        return queryset
 
 
 class NotificationViewSet(viewsets.ModelViewSet):

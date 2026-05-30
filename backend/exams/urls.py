@@ -12,7 +12,7 @@ from .views import (
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)
-router.register(r'exams', ExamViewSet)
+router.register(r'exams', ExamViewSet, basename='exam')
 router.register(r'notifications', NotificationViewSet)
 router.register(r'study-materials', StudyMaterialViewSet)
 router.register(r'subjects', SubjectViewSet, basename='subject')
