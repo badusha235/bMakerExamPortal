@@ -36,6 +36,41 @@ class Notification(models.Model):
     def __str__(self):
         return self.title
 
+class Subject(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField()
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='subjects')
+    icon_name = models.CharField(max_length=50, default="BookOpen")
+    description = models.TextField(blank=True)
+    
+    def __str__(self):
+        return f"{self.exam.name} - {self.name}"
+
+class QuestionPaper(models.Model):
+    EXAM_TYPES = (
+        ('ANNUAL', 'Annual Exam'),
+        ('MODEL', 'Model Exam'),
+        ('SUPPLEMENTARY', 'Supplementary'),
+    )
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='question_papers')
+    title = models.CharField(max_length=255)
+    year = models.IntegerField()
+    exam_type = models.CharField(max_length=15, choices=EXAM_TYPES)
+    pdf_file = models.FileField(upload_to='question_papers/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.subject.name} - {self.year} - {self.get_exam_type_display()}"
+
+class Chapter(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='chapters')
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    order = models.IntegerField(default=1)
+    
+    def __str__(self):
+        return self.title
+
 class StudyMaterial(models.Model):
     MATERIAL_TYPES = (
         ('PDF', 'PDF Note'),
