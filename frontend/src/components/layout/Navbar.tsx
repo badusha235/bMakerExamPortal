@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Menu, X, User, LogOut, ChevronDown } from "lucide-react";
+import { Search, Menu, X, LogOut, ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 
@@ -84,9 +84,6 @@ const Navbar = () => {
                       <p className="text-sm font-bold text-slate-900 truncate">{user.email}</p>
                     </div>
                     <div className="p-2">
-                       <Link href="/dashboard" className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-brand-blue rounded-xl transition-all">
-                        <User size={16} /> My Profile
-                      </Link>
                       <button 
                         onClick={() => {
                           logout();
