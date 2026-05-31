@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
-  ArrowLeft, BookOpen, FileText, Zap, Download, Eye, Search, Filter,
+  ArrowLeft, BookOpen, FileText, Zap, Eye, Search, Filter,
   Calculator, Beaker, FlaskConical, Dna, Languages, Map, Monitor,
   Loader2, ChevronRight, TrendingUp, LayoutTemplate, CheckCircle, Lightbulb,
 } from "lucide-react";
@@ -210,17 +210,11 @@ export default function SubjectModularDetailPage() {
                                     {idx === 0 && <span className="absolute top-4 right-4 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase px-2 py-1 rounded-lg border border-emerald-100">New</span>}
                                     <Link 
                                       href={`/viewer?file=${encodeURIComponent(paper.pdf_file || '')}&title=${encodeURIComponent(paper.title)}`}
-                                      className="flex-1 md:flex-none px-6 py-3 border border-slate-200 text-brand-blue font-bold text-xs rounded-full hover:bg-slate-50 transition-colors flex items-center justify-center"
-                                    >
-                                       View Online
-                                    </Link>
-                                    <a 
-                                      href={paper.pdf_file ? (paper.pdf_file.startsWith('http') ? paper.pdf_file : `http://localhost:8000${paper.pdf_file}`) : "#"} 
-                                      target="_blank"
                                       className="flex-1 md:flex-none px-6 py-3 bg-brand-blue text-white font-bold text-xs rounded-full shadow-md shadow-brand-blue/20 flex items-center justify-center gap-2 hover:bg-blue-700 transition-all"
                                     >
-                                       <Download size={14} /> Download
-                                    </a>
+                                      <Eye size={14} /> View Online
+                                    </Link>
+
                                  </div>
                               </div>
                             ))}

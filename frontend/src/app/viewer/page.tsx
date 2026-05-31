@@ -2,7 +2,7 @@
 
 import React, { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { ArrowLeft, Download, AlertCircle, FileText, Printer, Share2 } from "lucide-react";
+import { ArrowLeft, AlertCircle, FileText } from "lucide-react";
 
 function PDFViewerContent() {
   const searchParams = useSearchParams();
@@ -102,32 +102,47 @@ function PDFViewerContent() {
 
         {/* Right: actions */}
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <a
-            href={pdfDownloadUrl}
-            download
+          <span
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "8px 18px",
-              background: "#2563eb",
-              color: "white",
-              borderRadius: "10px",
+              color: "#475569",
+              fontSize: "10px",
               fontWeight: 700,
-              fontSize: "12px",
-              textDecoration: "none",
-              letterSpacing: "0.05em",
+              letterSpacing: "0.2em",
               textTransform: "uppercase",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              padding: "6px 14px",
+              borderRadius: "8px",
             }}
           >
-            <Download size={14} />
-            Download
-          </a>
+            🔒 Read Only
+          </span>
         </div>
       </header>
 
       {/* ── PDF Iframe – takes ALL remaining height ───── */}
       <div style={{ flex: 1, overflow: "hidden", position: "relative" }}>
+        {/* Overlay over Chrome's native PDF toolbar (~40px tall) */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "44px",
+            background: "#1e293b",
+            zIndex: 10,
+            pointerEvents: "all",
+            display: "flex",
+            alignItems: "center",
+            padding: "0 16px",
+          }}
+        >
+          <span style={{ color: "#334155", fontSize: "11px", fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" }}>
+            📄 {title}
+          </span>
+        </div>
+
         <iframe
           src={fullUrl}
           title={title}
@@ -163,7 +178,7 @@ function PDFViewerContent() {
           }}
         >
           Protected by{" "}
-          <span style={{ color: "#3b82f6" }}>ExamVault</span> Secure Engine
+          <span style={{ color: "#3b82f6" }}>bMakerExamVolt</span> Secure Engine
         </span>
       </footer>
     </div>
