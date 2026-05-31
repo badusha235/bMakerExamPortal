@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import Subject, QuestionPaper, Note, MockTest, StudyMaterial, ImportantTopic
 
 class SubjectSerializer(serializers.ModelSerializer):
+    question_papers_count = serializers.IntegerField(source='question_papers.count', read_only=True)
+    notes_count = serializers.IntegerField(source='notes.count', read_only=True)
+    mock_tests_count = serializers.IntegerField(source='mock_tests.count', read_only=True)
+    chapters_count = serializers.IntegerField(source='important_topics.count', read_only=True)
+
     class Meta:
         model = Subject
         fields = '__all__'

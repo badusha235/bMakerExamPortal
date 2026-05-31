@@ -113,19 +113,19 @@ export default function SubjectModularDetailPage() {
             </div>
             <div className="flex items-center gap-8 md:gap-12 bg-white px-8 py-5 rounded-3xl shadow-sm border border-slate-100/50">
                <div className="text-center">
-                 <p className="text-2xl font-bold text-slate-800">24</p>
+                 <p className="text-2xl font-bold text-slate-800">{subjectData?.chapters_count || 0}</p>
                  <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Chapters</p>
                </div>
                <div className="text-center">
-                 <p className="text-2xl font-bold text-slate-800">320+</p>
+                 <p className="text-2xl font-bold text-slate-800">{subjectData?.notes_count || 0}</p>
                  <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Notes</p>
                </div>
                <div className="text-center">
-                 <p className="text-2xl font-bold text-slate-800">150+</p>
+                 <p className="text-2xl font-bold text-slate-800">{subjectData?.mock_tests_count || 0}</p>
                  <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Mock Tests</p>
                </div>
                <div className="text-center">
-                 <p className="text-2xl font-bold text-slate-800">11</p>
+                 <p className="text-2xl font-bold text-slate-800">{subjectData?.question_papers_count || 0}</p>
                  <p className="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-1">Question Papers</p>
                </div>
             </div>
