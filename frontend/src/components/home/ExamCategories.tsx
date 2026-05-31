@@ -33,18 +33,18 @@ const ExamCategories = () => {
             <Link 
               key={idx} 
               href={cat.link}
-              className="group bg-white p-8 rounded-[2rem] border border-slate-200 hover:border-brand-blue/30 hover:shadow-2xl hover:shadow-brand-blue/10 hover:-translate-y-1.5 transition-all duration-300 relative overflow-hidden"
+              className="group bg-white p-4 rounded-3xl border border-slate-200 hover:border-brand-blue/30 hover:shadow-xl hover:shadow-brand-blue/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
             >
               {/* Subtle background icon */}
-              <div className="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] group-hover:scale-125 transition-all duration-500">
-                <cat.icon size={160} />
+              <div className="absolute -right-2 -bottom-2 opacity-[0.02] group-hover:opacity-[0.06] transition-all duration-500">
+                <cat.icon size={70} />
               </div>
               
-              <div className={`w-14 h-14 ${cat.color} rounded-2xl flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-black/5`}>
-                <cat.icon size={28} />
+              <div className={`w-8 h-8 ${cat.color} rounded-xl flex items-center justify-center text-white mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
+                <cat.icon size={16} />
               </div>
-              <h3 className="text-2xl font-bold text-slate-900 mb-2 group-hover:text-brand-blue transition-colors">{cat.name}</h3>
-              <p className="text-sm text-slate-400 font-semibold tracking-tight">{cat.label}</p>
+              <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-brand-blue transition-colors">{cat.name}</h3>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{cat.label}</p>
             </Link>
           ))}
         </div>
