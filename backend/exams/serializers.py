@@ -1,5 +1,13 @@
 from rest_framework import serializers
 from .models import Subject, QuestionPaper, Note, MockTest, StudyMaterial, ImportantTopic
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'is_superuser', 'is_staff')
 
 class SubjectSerializer(serializers.ModelSerializer):
     question_papers_count = serializers.IntegerField(source='question_papers.count', read_only=True)

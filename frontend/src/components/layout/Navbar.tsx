@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Menu, X, LogOut, ChevronDown } from "lucide-react";
+import { Search, Menu, X, LogOut, ChevronDown, Settings } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 
@@ -57,18 +57,18 @@ const Navbar = () => {
             </Link>
           ))}
           <div className="h-6 w-px bg-gray-200 mx-2" />
-          
+
           {user ? (
             <div className="relative">
-              <button 
+              <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full hover:bg-slate-100 transition-all"
+                className="flex items-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full hover:bg-slate-100 transition-all shadow-sm"
               >
                 <div className="w-6 h-6 bg-brand-blue rounded-full flex items-center justify-center text-[10px] text-white font-bold">
                   {user.username.charAt(0).toUpperCase()}
                 </div>
                 <span className="text-sm font-semibold text-slate-700">{user.username}</span>
-                <ChevronDown size={14} className={`text-slate-400 transition-transform ${isProfileOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown size={14} className={`text-slate-400 transition-transform ${isProfileOpen ? "rotate-180" : ""}`} />
               </button>
 
               <AnimatePresence>
@@ -79,12 +79,14 @@ const Navbar = () => {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     className="absolute right-0 mt-3 w-48 bg-white border border-slate-100 rounded-2xl shadow-premium overflow-hidden z-50"
                   >
-                    <div className="p-4 border-b border-slate-50">
-                      <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-1">Student</p>
+                    <div className="p-4 border-b border-slate-50 bg-slate-50/50">
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">
+                        {user.is_superuser ? "Administrator" : "Student"}
+                      </p>
                       <p className="text-sm font-bold text-slate-900 truncate">{user.email}</p>
                     </div>
                     <div className="p-2">
-                      <button 
+                      <button
                         onClick={() => {
                           logout();
                           window.location.href = "/login";
@@ -114,6 +116,24 @@ const Navbar = () => {
               </Link>
             </>
           )}
+
+          {/* Settings button — Icon Only, placed to the right */}
+          <button
+            onClick={() => {
+              if (user?.is_superuser) {
+                window.open("/admin/dashboard", "_blank");
+              }
+            }}
+            disabled={!user?.is_superuser}
+            title={user?.is_superuser ? "Admin Dashboard" : "Restricted Access"}
+            className={`p-2 transition-all rounded-lg ${
+              user?.is_superuser
+                ? "text-slate-600 hover:text-brand-blue hover:bg-slate-50 cursor-pointer"
+                : "text-slate-400 cursor-not-allowed opacity-70"
+            }`}
+          >
+            <Settings size={20} />
+          </button>
         </div>
 
         {/* Mobile Icons */}
@@ -151,8 +171,28 @@ const Navbar = () => {
                 </Link>
               ))}
               
+              {/* Mobile Settings Button — Icon Only */}
+              <button
+                onClick={() => {
+                  if (user?.is_superuser) {
+                    window.open("/admin/dashboard", "_blank");
+                  }
+                }}
+                disabled={!user?.is_superuser}
+                className={`py-3 flex items-center gap-3 transition-all mt-2 ${
+                  user?.is_superuser
+                    ? "text-slate-700 hover:text-brand-blue"
+                    : "text-slate-400 opacity-70 cursor-not-allowed"
+                }`}
+              >
+                <Settings size={20} />
+                <span className="font-semibold text-sm">
+                  {user?.is_superuser ? "Admin Dashboard" : "Settings (Restricted)"}
+                </span>
+              </button>
+
               {user ? (
-                <div className="flex flex-col gap-3 mt-4">
+                <div className="flex flex-col gap-3 mt-2">
                   <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">
                     <p className="text-sm font-bold text-slate-900">{user.username}</p>
                     <p className="text-xs text-slate-500">{user.email}</p>
@@ -168,7 +208,7 @@ const Navbar = () => {
                   </button>
                 </div>
               ) : (
-                <div className="flex flex-col gap-3 mt-4">
+                <div className="flex flex-col gap-3 mt-2">
                   <Link
                     href="/login"
                     className="w-full py-3 text-center text-brand-blue font-semibold border-2 border-brand-blue rounded-2xl"

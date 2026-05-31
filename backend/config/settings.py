@@ -157,6 +157,10 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': False,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:3000/google'],
+    'SERIALIZERS': {
+        'user': 'exams.serializers.UserSerializer',
+        'current_user': 'exams.serializers.UserSerializer',
+    },
 }
 
 AUTHENTICATION_BACKENDS = (
