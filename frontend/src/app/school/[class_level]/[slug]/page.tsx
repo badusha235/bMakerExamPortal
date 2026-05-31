@@ -12,6 +12,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import BiologyOverview from "@/components/subjects/BiologyOverview";
+import ChemistryOverview from "@/components/subjects/ChemistryOverview";
 
 interface QuestionPaper {
   id: number;
@@ -234,6 +235,8 @@ export default function SubjectModularDetailPage() {
                    <div key="overview">
                       {slug === 'biology' ? (
                         <BiologyOverview />
+                      ) : slug === 'chemistry' ? (
+                        <ChemistryOverview />
                       ) : (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center bg-white rounded-3xl border border-slate-100">
                            <LayoutTemplate size={36} className="mx-auto text-slate-200 mb-4" />
