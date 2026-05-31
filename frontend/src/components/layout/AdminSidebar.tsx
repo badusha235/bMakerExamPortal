@@ -30,8 +30,8 @@ export default function AdminSidebar() {
   return (
     <aside className="w-72 bg-slate-900 text-white h-screen fixed left-0 top-0 flex flex-col p-6 z-50">
       <div className="flex items-center gap-3 mb-12 px-2">
-        <div className="w-10 h-10 bg-brand-blue rounded-xl flex items-center justify-center font-bold text-xl">V</div>
-        <span className="text-xl font-bold tracking-tight">Vault<span className="text-brand-blue">Admin</span></span>
+        <div className="w-10 h-10 bg-brand-blue rounded-xl flex items-center justify-center font-bold text-xl text-white">b</div>
+        <span className="text-xl font-bold tracking-tight text-white">bMaker<span className="text-blue-400">StudyHub</span></span>
       </div>
 
       <nav className="flex-1 space-y-2">

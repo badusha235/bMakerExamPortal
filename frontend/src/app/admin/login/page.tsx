@@ -45,7 +45,7 @@ export default function AdminLoginPage() {
             <Lock size={32} />
           </div>
           <h1 className="text-3xl font-black text-slate-900 mb-2">Admin <span className="text-brand-blue">Login</span></h1>
-          <p className="text-slate-500 font-medium tracking-tight">Access the ExamVault management console.</p>
+          <p className="text-slate-500 font-medium tracking-tight">Access the bMakerStudyHub management console.</p>
         </div>
 
         <div className="bg-white p-10 rounded-[2.5rem] shadow-premium border border-slate-100">
@@ -97,7 +97,7 @@ export default function AdminLoginPage() {
         </div>
 
         <p className="text-center mt-12 text-slate-400 text-sm font-medium">
-          Powered by <span className="text-slate-600 font-bold">ExamVault Core v2.0</span>
+          Powered by <span className="text-slate-600 font-bold">bMakerStudyHub Core v2.0</span>
         </p>
       </motion.div>
     </div>

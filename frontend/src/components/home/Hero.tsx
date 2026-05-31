@@ -23,7 +23,7 @@ const Hero = () => {
               Trusted by 50,000+ Students
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 mb-6 leading-[1.1]">
-              Elevate Your <span className="text-brand-blue">Exam Prep</span> with ExamVault
+              Elevate Your <span className="text-brand-blue">Exam Prep</span> with bMakerStudyHub
             </h1>
             <p className="text-lg md:text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
               The most comprehensive platform for Kerala PSC, NEET, JEE, and competitive exams. Expert syllabus, mock tests, and real-time alerts.

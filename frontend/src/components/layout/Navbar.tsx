@@ -35,10 +35,10 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-10 h-10 bg-brand-blue rounded-xl flex items-center justify-center shadow-lg shadow-brand-blue/20">
-            <span className="text-white font-bold text-xl">E</span>
+            <span className="text-white font-bold text-xl">b</span>
           </div>
           <span className="text-2xl font-bold tracking-tight text-foreground">
-            Exam<span className="text-brand-blue">Vault</span>
+            bMaker<span className="text-brand-blue">StudyHub</span>
           </span>
         </Link>
 

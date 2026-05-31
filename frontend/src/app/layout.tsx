@@ -9,7 +9,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "ExamVault - Premium Exam Preparation Platform",
+  title: "bMakerStudyHub - Premium Exam Preparation Platform",
   description: "The ultimate destination for Kerala PSC, NEET, JEE, and competitive exam preparation. Smart search, mock tests, and study materials.",
 };
 

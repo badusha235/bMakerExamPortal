@@ -13,10 +13,10 @@ const Footer = () => {
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">E</span>
+                <span className="text-white font-bold text-sm">b</span>
               </div>
               <span className="text-xl font-bold tracking-tight">
-                Exam<span className="text-brand-blue">Vault</span>
+                bMaker<span className="text-brand-blue">StudyHub</span>
               </span>
             </Link>
             <p className="text-slate-500 leading-relaxed text-sm">
@@ -77,7 +77,7 @@ const Footer = () => {
         </div>
 
         <div className="pt-8 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-400">
-          <p>© {currentYear} ExamVault Educational Services. All rights reserved.</p>
+          <p>© {currentYear} bMaker Educational Services. All rights reserved.</p>
           <div className="flex gap-8">
             <Link href="#" className="hover:text-brand-blue transition-colors">Privacy</Link>
             <Link href="#" className="hover:text-brand-blue transition-colors">Terms</Link>

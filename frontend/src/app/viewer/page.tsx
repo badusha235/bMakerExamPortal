@@ -178,7 +178,7 @@ function PDFViewerContent() {
           }}
         >
           Protected by{" "}
-          <span style={{ color: "#3b82f6" }}>bMakerExamVolt</span> Secure Engine
+          <span style={{ color: "#3b82f6" }}>bMakerStudyHub</span> Secure Engine
         </span>
       </footer>
     </div>
