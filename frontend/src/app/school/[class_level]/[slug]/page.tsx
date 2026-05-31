@@ -98,8 +98,8 @@ export default function SubjectModularDetailPage() {
           </div>
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-10">
             <div className="flex items-center gap-6">
-               <div className="h-20 w-20 bg-blue-100 rounded-3xl flex items-center justify-center text-blue-600 shadow-sm border border-blue-200/50">
-                 <SubjectIcon size={36} strokeWidth={2} />
+               <div className="h-14 w-14 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600 shadow-sm border border-blue-200/50">
+                 <SubjectIcon size={26} strokeWidth={2} />
                </div>
                <div>
                   <h1 className="text-4xl font-bold text-slate-900 mb-2 tracking-tight">{subjectName}</h1>
@@ -194,12 +194,12 @@ export default function SubjectModularDetailPage() {
                       ) : (
                          <div className="space-y-4">
                             {filteredPapers.map((paper, idx) => (
-                              <div key={paper.id} className="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:border-brand-blue/30 transition-all flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
+                              <div key={paper.id} className="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 hover:border-brand-blue/30 transition-all flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden group">
                                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-transparent group-hover:bg-brand-blue transition-colors"></div>
                                  <div className="flex items-center gap-5 w-full md:w-auto">
-                                    <div className="h-14 w-14 border border-rose-100 bg-rose-50 text-rose-500 rounded-2xl flex flex-col items-center justify-center shrink-0 shadow-sm relative">
-                                      <FileText size={22} />
-                                      <span className="absolute -bottom-2 bg-rose-500 text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-full shadow-sm">PDF</span>
+                                    <div className="h-10 w-10 border border-rose-100 bg-rose-50 text-rose-500 rounded-xl flex flex-col items-center justify-center shrink-0 shadow-sm relative">
+                                      <FileText size={18} />
+                                      <span className="absolute -bottom-2 bg-rose-500 text-white text-[7px] font-black uppercase px-1.5 py-0.5 rounded-full shadow-sm">PDF</span>
                                     </div>
                                     <div>
                                        <h3 className="text-base font-bold text-slate-900 group-hover:text-brand-blue transition-colors">{paper.title}</h3>
@@ -220,7 +220,7 @@ export default function SubjectModularDetailPage() {
                             ))}
                             {filteredPapers.length === 0 && (
                               <div className="text-center py-24 bg-white rounded-3xl border border-dashed border-slate-200">
-                                <Search className="mx-auto text-slate-300 mb-4" size={48} />
+                                <Search className="mx-auto text-slate-300 mb-4" size={36} />
                                 <h3 className="text-xl font-bold text-slate-800 mb-1">No question papers found</h3>
                                 <p className="text-slate-500">Try adjusting your filters or search term.</p>
                               </div>
@@ -231,7 +231,7 @@ export default function SubjectModularDetailPage() {
                  )}
                  {activeTab !== "papers" && (
                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center bg-white rounded-3xl border border-slate-100">
-                      <LayoutTemplate size={48} className="mx-auto text-slate-200 mb-4" />
+                      <LayoutTemplate size={36} className="mx-auto text-slate-200 mb-4" />
                       <h3 className="text-xl font-bold text-slate-800 mb-2 capitalize">{activeTab} section</h3>
                       <p className="text-slate-500">This content is currently being prepared by our educators.</p>
                    </motion.div>
@@ -248,10 +248,10 @@ export default function SubjectModularDetailPage() {
                        { label: "Answer Keys", icon: CheckCircle, color: "text-amber-500", bg: "bg-amber-50" },
                        { label: "Exam Pattern", icon: LayoutTemplate, color: "text-rose-500", bg: "bg-rose-50" },
                      ].map((item, i) => (
-                       <button key={i} className="w-full flex items-center justify-between p-3 rounded-2xl hover:bg-slate-50 transition-colors group">
+                       <button key={i} className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors group">
                           <div className="flex items-center gap-3">
-                             <div className={`h-8 w-8 ${item.bg} ${item.color} rounded-xl flex items-center justify-center`}>
-                               <item.icon size={16} />
+                             <div className={`h-7 w-7 ${item.bg} ${item.color} rounded-lg flex items-center justify-center`}>
+                               <item.icon size={14} />
                              </div>
                              <span className="text-sm font-semibold text-slate-700 group-hover:text-brand-blue transition-colors">{item.label}</span>
                           </div>

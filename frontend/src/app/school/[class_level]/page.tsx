@@ -166,14 +166,14 @@ export default function ClassLevelPage() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: idx * 0.05 }}
                       onClick={() => router.push(`/school/${classLevel}/${sub.slug}?board=${board}&stream=${stream}`)}
-                      className="group bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:border-brand-blue/20 transition-all cursor-pointer relative flex flex-col justify-between overflow-hidden min-h-[220px]"
+                      className="group bg-white p-5 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:border-brand-blue/20 transition-all cursor-pointer relative flex flex-col justify-between overflow-hidden min-h-[200px]"
                     >
                       <div>
-                        <div className={`w-14 h-14 ${style.bg} ${style.color} rounded-2xl flex items-center justify-center mb-6`}>
-                           <IconComp size={28} strokeWidth={2} />
+                        <div className={`w-10 h-10 ${style.bg} ${style.color} rounded-xl flex items-center justify-center mb-5`}>
+                           <IconComp size={20} strokeWidth={2} />
                         </div>
-                        <h3 className="text-xl font-bold text-slate-900 mb-1">{sub.name}</h3>
-                        <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-8">Modular Learning Series</p>
+                        <h3 className="text-lg font-bold text-slate-900 mb-1">{sub.name}</h3>
+                        <p className="text-slate-400 text-[10px] font-semibold uppercase tracking-wider mb-6">Modular Learning Series</p>
                       </div>
 
                       <div className="flex items-center justify-between mt-auto">
@@ -203,9 +203,9 @@ export default function ClassLevelPage() {
                { icon: Zap, title: "Mock Tests", sub: "Practice & Evaluate", color: "text-blue-500", bg: "bg-blue-50" },
                { icon: Lightbulb, title: "Study Smart", sub: "Learn Better", color: "text-indigo-600", bg: "bg-indigo-50" }
              ].map((feature, i) => (
-                <div key={i} className="bg-white rounded-[1.5rem] p-5 shadow-sm border border-slate-100 flex items-center gap-4 hover:border-brand-blue/30 transition-colors cursor-pointer">
-                   <div className={`h-12 w-12 rounded-2xl flex items-center justify-center shrink-0 ${feature.bg} ${feature.color}`}>
-                     <feature.icon size={22} strokeWidth={2} />
+                <div key={i} className="bg-white rounded-[1.5rem] p-4 shadow-sm border border-slate-100 flex items-center gap-4 hover:border-brand-blue/30 transition-colors cursor-pointer">
+                   <div className={`h-10 w-10 rounded-xl flex items-center justify-center shrink-0 ${feature.bg} ${feature.color}`}>
+                     <feature.icon size={18} strokeWidth={2} />
                    </div>
                    <div>
                      <h4 className="font-bold text-sm text-slate-900 mb-0.5">{feature.title}</h4>
