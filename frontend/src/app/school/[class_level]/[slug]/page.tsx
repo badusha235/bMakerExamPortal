@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import Link from "next/link";
+import BiologyOverview from "@/components/subjects/BiologyOverview";
 
 interface QuestionPaper {
   id: number;
@@ -229,8 +230,21 @@ export default function SubjectModularDetailPage() {
                       )}
                    </motion.div>
                  )}
-                 {activeTab !== "papers" && (
-                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center bg-white rounded-3xl border border-slate-100">
+                 {activeTab === "overview" && (
+                   <div key="overview">
+                      {slug === 'biology' ? (
+                        <BiologyOverview />
+                      ) : (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center bg-white rounded-3xl border border-slate-100">
+                           <LayoutTemplate size={36} className="mx-auto text-slate-200 mb-4" />
+                           <h3 className="text-xl font-bold text-slate-800 mb-2">Overview Section</h3>
+                           <p className="text-slate-500">This content is currently being prepared by our educators.</p>
+                        </motion.div>
+                      )}
+                   </div>
+                 )}
+                 {activeTab !== "papers" && activeTab !== "overview" && (
+                   <motion.div key={activeTab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center bg-white rounded-3xl border border-slate-100">
                       <LayoutTemplate size={36} className="mx-auto text-slate-200 mb-4" />
                       <h3 className="text-xl font-bold text-slate-800 mb-2 capitalize">{activeTab} section</h3>
                       <p className="text-slate-500">This content is currently being prepared by our educators.</p>
