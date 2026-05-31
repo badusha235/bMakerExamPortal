@@ -13,6 +13,11 @@ import Footer from "@/components/layout/Footer";
 import Link from "next/link";
 import BiologyOverview from "@/components/subjects/BiologyOverview";
 import ChemistryOverview from "@/components/subjects/ChemistryOverview";
+import EnglishOverview from "@/components/subjects/EnglishOverview";
+import ITOverview from "@/components/subjects/ITOverview";
+import MalayalamOverview from "@/components/subjects/MalayalamOverview";
+import MathOverview from "@/components/subjects/MathOverview";
+import PhysicsOverview from "@/components/subjects/PhysicsOverview";
 
 interface QuestionPaper {
   id: number;
@@ -233,10 +238,20 @@ export default function SubjectModularDetailPage() {
                  )}
                  {activeTab === "overview" && (
                    <div key="overview">
-                      {slug === 'biology' ? (
-                        <BiologyOverview />
-                      ) : slug === 'chemistry' ? (
-                        <ChemistryOverview />
+                       {slug.toLowerCase() === 'mathematics' ? (
+                         <MathOverview />
+                       ) : slug.toLowerCase() === 'physics' ? (
+                         <PhysicsOverview />
+                       ) : slug.toLowerCase() === 'biology' ? (
+                         <BiologyOverview />
+                       ) : slug.toLowerCase() === 'chemistry' ? (
+                         <ChemistryOverview />
+                       ) : slug.toLowerCase() === 'english' ? (
+                         <EnglishOverview />
+                       ) : slug.toLowerCase() === 'malayalam' ? (
+                         <MalayalamOverview />
+                      ) : (slug.toLowerCase() === 'it' || slug.toLowerCase().includes('information')) ? (
+                        <ITOverview />
                       ) : (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="py-20 text-center bg-white rounded-3xl border border-slate-100">
                            <LayoutTemplate size={36} className="mx-auto text-slate-200 mb-4" />
