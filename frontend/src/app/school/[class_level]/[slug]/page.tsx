@@ -37,7 +37,7 @@ export default function SubjectModularDetailPage() {
   const boardParam = searchParams.get('board') || 'kerala_state';
   const streamParam = searchParams.get('stream') || 'general';
 
-  const [activeTab, setActiveTab] = useState<TabType>("papers");
+  const [activeTab, setActiveTab] = useState<TabType>("overview");
   const [yearFilter, setYearFilter] = useState<string>("All Years");
   const [searchQuery, setSearchQuery] = useState("");
 
