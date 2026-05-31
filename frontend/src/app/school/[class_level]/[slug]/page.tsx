@@ -18,6 +18,7 @@ import ITOverview from "@/components/subjects/ITOverview";
 import MalayalamOverview from "@/components/subjects/MalayalamOverview";
 import MathOverview from "@/components/subjects/MathOverview";
 import PhysicsOverview from "@/components/subjects/PhysicsOverview";
+import SocialScienceOverview from "@/components/subjects/SocialScienceOverview";
 
 interface QuestionPaper {
   id: number;
@@ -242,6 +243,8 @@ export default function SubjectModularDetailPage() {
                          <MathOverview />
                        ) : slug.toLowerCase() === 'physics' ? (
                          <PhysicsOverview />
+                       ) : (slug.toLowerCase() === 'social-science' || slug.toLowerCase().includes('social')) ? (
+                         <SocialScienceOverview />
                        ) : slug.toLowerCase() === 'biology' ? (
                          <BiologyOverview />
                        ) : slug.toLowerCase() === 'chemistry' ? (

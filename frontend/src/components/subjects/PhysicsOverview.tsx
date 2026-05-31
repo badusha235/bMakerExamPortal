@@ -21,14 +21,14 @@ const PhysicsOverview = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 border border-blue-500/30 shadow-2xl p-8 md:p-12 mb-10 text-white"
+      className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-sky-50/50 via-indigo-50/50 to-purple-50/30 border border-white shadow-2xl p-8 md:p-12 mb-10"
     >
       {/* Space-like Background Particles */}
       <div className="absolute inset-0 pointer-events-none">
          {Array.from({ length: 40 }).map((_, i) => (
            <motion.div
              key={i}
-             className="absolute bg-white rounded-full blur-[1px]"
+             className="absolute bg-blue-300 rounded-full blur-[1px]"
              style={{
                 width: Math.random() * 2 + "px",
                 height: Math.random() * 2 + "px",
@@ -49,8 +49,8 @@ const PhysicsOverview = () => {
       </div>
 
       {/* Cosmic Glows */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[120px] -mr-80 -mt-80" />
-      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[120px] -ml-40 -mb-40" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[120px] -mr-80 -mt-80" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-purple-400/10 rounded-full blur-[120px] -ml-40 -mb-40" />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* Left Column: Content */}
@@ -59,7 +59,7 @@ const PhysicsOverview = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-600/30 text-cyan-300 text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-sm border border-cyan-500/20"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-sky-100 text-sky-700 text-xs font-black uppercase tracking-[0.2em] mb-6 shadow-sm border border-sky-200/50"
           >
             ⚛️ Physics
           </motion.span>
@@ -68,16 +68,16 @@ const PhysicsOverview = () => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tight"
+            className="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight tracking-tight"
           >
-            Discover the <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-electric-blue to-blue-400">Laws of the Universe</span>
+            Discover the <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500">Laws of the Universe</span>
           </motion.h2>
           
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
-            className="text-slate-300 text-base md:text-lg leading-relaxed mb-10 font-medium"
+            className="text-slate-600 text-base md:text-lg leading-relaxed mb-10 font-medium"
           >
             Physics is the science that explains how the universe works, from the motion of everyday objects to the forces that govern planets, energy, light, and matter. Through observation, experimentation, and problem-solving, students develop a deeper understanding of natural phenomena and the fundamental principles that shape the world around us. Physics encourages curiosity, logical thinking, and innovation, helping learners explore the wonders of science and technology.
           </motion.p>
@@ -98,12 +98,12 @@ const PhysicsOverview = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + i * 0.1 }}
                 whileHover={{ scale: 1.05, x: 5 }}
-                className="flex items-center gap-3 p-4 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all group"
+                className="flex items-center gap-3 p-4 bg-white/60 backdrop-blur-md rounded-2xl border border-white shadow-sm hover:shadow-md transition-all group"
               >
                 <div className={`w-10 h-10 ${item.color} rounded-xl flex items-center justify-center text-white shadow-lg shadow-black/20 group-hover:rotate-12 transition-transform`}>
                   <item.icon size={20} />
                 </div>
-                <span className="font-bold text-slate-100 text-[13px]">{item.text}</span>
+                <span className="font-bold text-slate-800 text-[13px]">{item.text}</span>
               </motion.div>
             ))}
           </div>
