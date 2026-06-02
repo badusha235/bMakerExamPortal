@@ -1,97 +1,106 @@
-import React from "react";
-import { Bell, Calendar, ChevronRight, Sparkles } from "lucide-react";
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { Bell, Calendar, ChevronRight, PartyPopper } from "lucide-react";
 
 const notifications = [
   {
-    title: "Kerala PSC LDC 2026 Notification Out",
+    title: "Kerala PSC LDC 2026 — new notification!",
     date: "May 25, 2026",
     expiry: "Jun 30, 2026",
     isNew: true,
-    tag: "PSC"
+    tag: "PSC",
+    emoji: "📋",
   },
   {
-    title: "SSC CGL Tier 1 Admit Card Released",
+    title: "SSC CGL admit card is out!",
     date: "May 20, 2026",
-    expiry: "Exam Starts Jul 5",
+    expiry: "Exam Jul 5",
     isNew: false,
-    tag: "SSC"
+    tag: "SSC",
+    emoji: "🎫",
   },
   {
-    title: "NEET UG 2026 Revised Exam Pattern",
+    title: "NEET 2026 — check the new pattern",
     date: "May 18, 2026",
-    expiry: "Check Details",
+    expiry: "See details",
     isNew: true,
-    tag: "NEET"
-  }
+    tag: "NEET",
+    emoji: "🩺",
+  },
 ];
 
-const Notifications = () => {
+export default function Notifications() {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-14 md:py-16">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-12 items-start">
-          <div className="lg:w-1/3">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-600 rounded-lg text-xs font-bold mb-4">
-              <Bell size={14} />
-              LIVE UPDATES
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-6">
-              Never Miss a <span className="text-brand-blue">Deadline</span>
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 lg:flex-row lg:gap-12">
+          <motion.div
+            className="lg:w-2/5"
+            initial={{ opacity: 0, x: -16 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="mb-3 inline-flex items-center gap-2 rounded-full border-2 border-rose-200 bg-rose-100 px-3 py-1.5 text-xs font-bold text-rose-700">
+              <PartyPopper size={16} />
+              Hot updates!
+            </span>
+            <h2 className="mb-3 text-3xl font-extrabold text-slate-800 md:text-4xl">
+              Don&apos;t miss the <span className="text-rose-500">news</span> 🔔
             </h2>
-            <p className="text-slate-500 mb-8 leading-relaxed">
-              Real-time notifications for Kerala PSC, SSC, UPSC and Board exams. We track the official portals so you don't have to.
+            <p className="mb-6 text-slate-600">
+              Fresh exam alerts — we watch the websites so you can keep learning!
             </p>
-            <Link 
-              href="/notifications" 
-              className="inline-flex items-center justify-center px-6 py-3 bg-brand-blue text-white font-bold rounded-2xl hover:bg-brand-blue-deep transition-all shadow-lg shadow-brand-blue/10"
+            <Link
+              href="/notifications"
+              className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-rose-400 to-orange-400 px-6 py-3 font-bold text-white shadow-md transition-transform hover:scale-[1.02]"
             >
-              See All Alerts
+              See all alerts <ChevronRight size={18} />
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="lg:w-2/3 w-full space-y-4">
+          <div className="w-full space-y-3 lg:w-3/5">
             {notifications.map((notif, idx) => (
-              <div 
+              <motion.div
                 key={idx}
-                className="group bg-white p-5 rounded-3xl border border-slate-100 hover:border-brand-blue/20 hover:shadow-xl hover:shadow-slate-200/50 transition-all cursor-pointer flex items-center gap-6"
+                initial={{ opacity: 0, x: 16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.06 }}
+                className="group flex items-center gap-4 rounded-2xl border-2 border-slate-100 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-violet-200 hover:shadow-md"
               >
-                <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-blue-soft group-hover:text-brand-blue transition-colors flex-shrink-0">
-                  <Bell size={24} />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-xl">
+                  {notif.emoji}
                 </div>
-                <div className="flex-grow min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[10px] font-bold text-brand-blue tracking-[0.2em] bg-brand-blue/5 px-2 py-0.5 rounded uppercase">
+                <div className="min-w-0 flex-1">
+                  <div className="mb-1 flex flex-wrap items-center gap-2">
+                    <span className="rounded-md bg-violet-100 px-2 py-0.5 text-[10px] font-black uppercase text-violet-700">
                       {notif.tag}
                     </span>
                     {notif.isNew && (
-                      <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-500 uppercase">
-                        <Sparkles size={10} /> New
-                      </span>
+                      <span className="text-[10px] font-black uppercase text-emerald-600">✨ New</span>
                     )}
                   </div>
-                  <h3 className="font-bold text-slate-900 group-hover:text-brand-blue transition-colors truncate pr-4">
+                  <h3 className="truncate font-bold text-slate-800 group-hover:text-violet-600">
                     {notif.title}
                   </h3>
-                  <div className="flex items-center gap-4 mt-2">
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400 font-medium">
-                      <Calendar size={14} /> {notif.date}
-                    </div>
-                    <div className="text-xs font-bold text-slate-900 border-l border-slate-200 pl-4 uppercase tracking-tighter">
-                      Ends: {notif.expiry}
-                    </div>
+                  <div className="mt-1 flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
+                    <span className="flex items-center gap-1">
+                      <Calendar size={12} /> {notif.date}
+                    </span>
+                    <span className="text-rose-600">Ends: {notif.expiry}</span>
                   </div>
                 </div>
-                <div className="p-2 rounded-full bg-slate-50 text-slate-300 group-hover:text-brand-blue group-hover:bg-brand-blue-soft transition-all hidden md:block">
-                  <ChevronRight size={20} />
-                </div>
-              </div>
+                <Bell
+                  size={18}
+                  className="hidden shrink-0 text-slate-300 group-hover:text-violet-500 md:block"
+                />
+              </motion.div>
             ))}
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default Notifications;
+}

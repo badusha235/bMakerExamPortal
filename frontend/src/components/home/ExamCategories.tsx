@@ -1,56 +1,90 @@
-import React from "react";
-import { 
-  BookText, 
-  Code,
-  GraduationCap,
-  ArrowUpRight
-} from "lucide-react";
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const categories = [
-  { name: "SSLC", label: "Kerala State & CBSE", icon: BookText, color: "bg-brand-blue", link: "/school/sslc" },
-  { name: "Plus One", label: "Science, Commerce, Humanities", icon: Code, color: "bg-emerald-500", link: "/school/plus_one" },
-  { name: "Plus Two", label: "Science, Commerce, Humanities", icon: GraduationCap, color: "bg-teal-500", link: "/school/plus_two" },
+  {
+    name: "SSLC",
+    label: "Class 10 — Kerala & CBSE",
+    emoji: "🎒",
+    gradient: "from-sky-400 to-blue-500",
+    bg: "bg-sky-50",
+    link: "/school/sslc",
+    sticker: "Super start!",
+  },
+  {
+    name: "Plus One",
+    label: "Class 11 — All streams",
+    emoji: "🔭",
+    gradient: "from-emerald-400 to-teal-500",
+    bg: "bg-emerald-50",
+    link: "/school/plus_one",
+    sticker: "Level up!",
+  },
+  {
+    name: "Plus Two",
+    label: "Class 12 — Board ready",
+    emoji: "🚀",
+    gradient: "from-violet-400 to-purple-500",
+    bg: "bg-violet-50",
+    link: "/school/plus_two",
+    sticker: "Go for it!",
+  },
 ];
 
-const ExamCategories = () => {
+export default function ExamCategories() {
   return (
-    <section className="py-20 bg-slate-50">
+    <section className="py-12 md:py-16">
       <div className="container mx-auto px-4 md:px-6">
-        <div className="flex justify-between items-end mb-12">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-slate-900 mb-4">
-              Explore <span className="text-brand-blue">Classes</span>
-            </h2>
-            <p className="text-slate-500 max-w-xl text-sm md:text-base leading-relaxed">
-              Find specialized study materials, mock tests, and question papers for SSLC, Plus One, and Plus Two.
-            </p>
-          </div>
+        <div className="mb-10 text-center">
+          <span className="mb-2 inline-block rounded-full bg-amber-100 px-4 py-1 text-sm font-bold text-amber-800">
+            Step 1 — Pick your class 🎯
+          </span>
+          <h2 className="text-3xl font-extrabold text-slate-800 md:text-4xl">
+            Choose your <span className="text-violet-500">class adventure</span>
+          </h2>
+          <p className="mx-auto mt-2 max-w-lg text-slate-600">
+            Tap a card to open notes, question papers, and mock tests!
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat, idx) => (
-            <Link 
-              key={idx} 
-              href={cat.link}
-              className="group bg-white p-4 rounded-3xl border border-slate-200 hover:border-brand-blue/30 hover:shadow-xl hover:shadow-brand-blue/5 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden"
+            <motion.div
+              key={cat.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.08 }}
             >
-              {/* Subtle background icon */}
-              <div className="absolute -right-2 -bottom-2 opacity-[0.02] group-hover:opacity-[0.06] transition-all duration-500">
-                <cat.icon size={70} />
-              </div>
-              
-              <div className={`w-8 h-8 ${cat.color} rounded-xl flex items-center justify-center text-white mb-3 group-hover:scale-110 transition-transform duration-300 shadow-md`}>
-                <cat.icon size={16} />
-              </div>
-              <h3 className="text-lg font-bold text-slate-900 mb-1 group-hover:text-brand-blue transition-colors">{cat.name}</h3>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{cat.label}</p>
-            </Link>
+              <Link
+                href={cat.link}
+                className={`group relative flex flex-col overflow-hidden rounded-[2rem] border-4 border-white ${cat.bg} p-6 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl`}
+              >
+                <span className="absolute right-4 top-4 rounded-full bg-white px-3 py-1 text-[10px] font-black text-slate-600 shadow-sm">
+                  {cat.sticker}
+                </span>
+                <div
+                  className={`mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.gradient} text-3xl shadow-md transition-transform group-hover:scale-110 group-hover:rotate-3`}
+                >
+                  {cat.emoji}
+                </div>
+                <h3 className="mb-1 text-xl font-extrabold text-slate-800 group-hover:text-violet-600">
+                  {cat.name}
+                </h3>
+                <p className="mb-5 text-sm font-semibold text-slate-500">{cat.label}</p>
+                <span
+                  className={`mt-auto inline-flex w-fit items-center gap-2 rounded-full bg-gradient-to-r ${cat.gradient} px-4 py-2 text-sm font-bold text-white shadow-sm`}
+                >
+                  Let&apos;s go! <ArrowRight size={14} className="group-hover:translate-x-0.5" />
+                </span>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
   );
-};
-
-export default ExamCategories;
+}
