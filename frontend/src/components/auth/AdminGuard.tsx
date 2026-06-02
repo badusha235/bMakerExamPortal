@@ -15,7 +15,7 @@ export default function AdminGuard({ children }: { children: React.ReactNode }) 
         router.push("/login");
       } else if (!user.is_superuser && !user.is_staff) {
         // Logged in but not an admin, go home
-        router.push("/");
+        router.push("/home");
       }
     }
   }, [user, isLoading, router]);

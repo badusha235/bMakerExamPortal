@@ -76,7 +76,7 @@ export default function RegisterPage() {
         className="w-full max-w-md"
       >
         <div className="text-center mb-10">
-          <Link href="/" className="inline-block transform hover:scale-105 transition-transform">
+          <Link href="/home" className="inline-block transform hover:scale-105 transition-transform">
             <div className="w-16 h-16 bg-brand-blue rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-brand-blue/20">
               <span className="text-white font-bold text-3xl">b</span>
             </div>

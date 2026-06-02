@@ -81,7 +81,7 @@ export default function ClassLevelPage() {
           {/* Breadcrumb */}
           <div className="mb-8">
             <button 
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/home")}
               className="flex items-center gap-2 text-slate-500 hover:text-brand-blue transition-colors text-sm font-semibold"
             >
               <ArrowLeft size={16} strokeWidth={2.5} /> Back to Home

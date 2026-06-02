@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand Column */}
           <div className="space-y-6">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/home" className="flex items-center gap-2">
               <div className="w-8 h-8 bg-brand-blue rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">b</span>
               </div>

@@ -10,7 +10,7 @@ const MobileBottomNavigation = () => {
   const pathname = usePathname();
 
   const navItems = [
-    { name: "Home", href: "/", icon: Home },
+    { name: "Home", href: "/home", icon: Home },
     { name: "Exams", href: "/exams", icon: Search },
     { name: "Store", href: "/study-materials", icon: BookOpen },
     { name: "Alerts", href: "/notifications", icon: Bell },

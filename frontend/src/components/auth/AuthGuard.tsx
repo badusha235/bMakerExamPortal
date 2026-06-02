@@ -19,7 +19,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
         router.push("/login");
       } else if (user && isPublicPath && pathname !== "/admin/login") {
         // Redirect to home if authenticated and trying to access login/register
-        router.push("/");
+        router.push("/home");
       }
     }
   }, [user, isLoading, pathname, router]);

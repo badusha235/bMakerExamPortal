@@ -283,7 +283,7 @@ const ExamSelectionPage = () => {
               We couldn&apos;t find the exam category you&apos;re looking for.
             </p>
             <Link
-              href="/"
+              href="/home"
               className="inline-flex items-center gap-2 px-6 py-3 bg-brand-blue text-white font-bold rounded-2xl"
             >
               <ArrowLeft size={18} /> Back to Home
@@ -304,7 +304,7 @@ const ExamSelectionPage = () => {
           {/* Breadcrumb */}
           <div className="mb-10">
             <Link
-              href="/"
+              href="/home"
               className="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-brand-blue transition-colors group"
             >
               <ArrowLeft

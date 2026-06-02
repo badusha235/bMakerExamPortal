@@ -29,7 +29,7 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
       <Link 
-        href="/"
+        href="/home"
         className="fixed top-8 left-8 flex items-center gap-2 text-slate-400 hover:text-brand-blue transition-colors font-semibold"
       >
         <ArrowLeft size={18} /> Back to Portal
