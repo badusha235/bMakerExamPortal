@@ -2,15 +2,19 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Search, Menu, X, LogOut, ChevronDown, Settings } from "lucide-react";
+import { Search, Menu, X, LogOut, ChevronDown, Settings, Plus, LayoutDashboard } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
+import { isAdminUser } from "@/lib/auth";
+import { useQuestionPaperModal } from "@/components/admin/QuestionPaperModalContext";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const isAdmin = isAdminUser(user);
+  const { openAddQuestionPaper } = useQuestionPaperModal();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -77,11 +81,11 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 mt-3 w-48 bg-white border border-slate-100 rounded-2xl shadow-premium overflow-hidden z-50"
+                    className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 rounded-2xl shadow-premium overflow-hidden z-50"
                   >
                     <div className="p-4 border-b border-slate-50 bg-slate-50/50">
                       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-1">
-                        {user.is_superuser ? "Administrator" : "Student"}
+                        {isAdmin ? "Administrator" : "Student"}
                       </p>
                       <p className="text-sm font-bold text-slate-900 truncate">{user.email}</p>
                     </div>
@@ -120,14 +124,14 @@ const Navbar = () => {
           {/* Settings button — Icon Only, placed to the right */}
           <button
             onClick={() => {
-              if (user?.is_superuser) {
+              if (isAdmin) {
                 window.open("/admin/dashboard", "_blank");
               }
             }}
-            disabled={!user?.is_superuser}
-            title={user?.is_superuser ? "Admin Dashboard" : "Restricted Access"}
+            disabled={!isAdmin}
+            title={isAdmin ? "Admin Dashboard" : "Restricted Access"}
             className={`p-2 transition-all rounded-lg ${
-              user?.is_superuser
+              isAdmin
                 ? "text-slate-600 hover:text-brand-blue hover:bg-slate-50 cursor-pointer"
                 : "text-slate-400 cursor-not-allowed opacity-70"
             }`}
@@ -172,22 +176,46 @@ const Navbar = () => {
               ))}
               
               {/* Mobile Settings Button — Icon Only */}
+              {isAdmin && (
+                <>
+                  <button
+                    type="button"
+                    className="flex w-full items-center gap-3 border-b border-gray-50 py-3 text-left text-slate-700 hover:text-brand-blue"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      openAddQuestionPaper();
+                    }}
+                  >
+                    <Plus size={20} />
+                    <span className="text-sm font-semibold">Add Question Paper</span>
+                  </button>
+                  <Link
+                    href="/admin/dashboard"
+                    className="py-3 flex items-center gap-3 text-slate-700 hover:text-brand-blue border-b border-gray-50"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <LayoutDashboard size={20} />
+                    <span className="font-semibold text-sm">Admin Dashboard</span>
+                  </Link>
+                </>
+              )}
+
               <button
                 onClick={() => {
-                  if (user?.is_superuser) {
+                  if (isAdmin) {
                     window.open("/admin/dashboard", "_blank");
                   }
                 }}
-                disabled={!user?.is_superuser}
+                disabled={!isAdmin}
                 className={`py-3 flex items-center gap-3 transition-all mt-2 ${
-                  user?.is_superuser
+                  isAdmin
                     ? "text-slate-700 hover:text-brand-blue"
                     : "text-slate-400 opacity-70 cursor-not-allowed"
                 }`}
               >
                 <Settings size={20} />
                 <span className="font-semibold text-sm">
-                  {user?.is_superuser ? "Admin Dashboard" : "Settings (Restricted)"}
+                  {isAdmin ? "Admin Dashboard" : "Settings (Restricted)"}
                 </span>
               </button>
 

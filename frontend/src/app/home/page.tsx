@@ -5,6 +5,7 @@ import StudyMaterials from "@/components/home/StudyMaterials";
 import MockTestBanner from "@/components/home/MockTestBanner";
 import Footer from "@/components/layout/Footer";
 import MobileBottomNavigation from "@/components/layout/MobileBottomNavigation";
+import AdminHomeActions from "@/components/admin/AdminHomeActions";
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <Navbar />
 
       <div className="pt-24 md:pt-32">
+        <AdminHomeActions />
         <ExamCategories />
         <Notifications />
         <StudyMaterials />

@@ -5,6 +5,7 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import AuthGuard from "@/components/auth/AuthGuard";
+import { QuestionPaperModalProvider } from "@/components/admin/QuestionPaperModalContext";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -30,9 +31,11 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-sans">
         <GoogleOAuthProvider clientId="YOUR_GOOGLE_CLIENT_ID">
           <AuthProvider>
-            <AuthGuard>
-              {children}
-            </AuthGuard>
+            <QuestionPaperModalProvider>
+              <AuthGuard>
+                {children}
+              </AuthGuard>
+            </QuestionPaperModalProvider>
           </AuthProvider>
         </GoogleOAuthProvider>
       </body>

@@ -19,6 +19,7 @@ import MalayalamOverview from "@/components/subjects/MalayalamOverview";
 import MathOverview from "@/components/subjects/MathOverview";
 import PhysicsOverview from "@/components/subjects/PhysicsOverview";
 import SocialScienceOverview from "@/components/subjects/SocialScienceOverview";
+import AdminAddQuestionPaperButton from "@/components/admin/AdminAddQuestionPaperButton";
 
 interface QuestionPaper {
   id: number;
@@ -70,18 +71,30 @@ export default function SubjectModularDetailPage() {
       .catch(console.error);
   }, [slug, boardParam, classLevel, streamParam]);
 
-  useEffect(() => {
+  const loadPapers = React.useCallback(() => {
     if (!slug) return;
     setLoadingPapers(true);
-    fetch(`http://localhost:8000/api/exams/question-papers/?subject__slug=${slug}&subject__board=${boardParam}&subject__class_level=${classLevel}&subject__stream=${streamParam}`)
+    fetch(
+      `http://localhost:8000/api/exams/question-papers/?subject__slug=${slug}&subject__board=${boardParam}&subject__class_level=${classLevel}&subject__stream=${streamParam}`
+    )
       .then((res) => res.json())
       .then((data) => {
-        const results = Array.isArray(data) ? data : data.results ?? [];
+        const results = Array.isArray(data) ? data : (data.results ?? []);
         setPapers(results);
       })
       .catch(() => setPapers([]))
       .finally(() => setLoadingPapers(false));
   }, [slug, boardParam, classLevel, streamParam]);
+
+  useEffect(() => {
+    loadPapers();
+  }, [loadPapers]);
+
+  useEffect(() => {
+    const onUpdated = () => loadPapers();
+    window.addEventListener("question-papers-updated", onUpdated);
+    return () => window.removeEventListener("question-papers-updated", onUpdated);
+  }, [loadPapers]);
 
   const yearOptions = ["All Years", "2025", "2024", "2023", "2022", "2021", "More"];
 
@@ -179,7 +192,15 @@ export default function SubjectModularDetailPage() {
                <AnimatePresence mode="wait">
                  {activeTab === "papers" && (
                    <motion.div key="papers" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                      <h2 className="text-2xl font-bold text-slate-900 mb-6 tracking-tight">Question Papers</h2>
+                      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Question Papers</h2>
+                        <AdminAddQuestionPaperButton
+                          board={boardParam}
+                          classLevel={classLevel}
+                          stream={streamParam}
+                          subjectSlug={slug}
+                        />
+                      </div>
                       <div className="flex flex-wrap items-center gap-3 mb-8">
                          {yearOptions.map((year, i) => (
                            <button

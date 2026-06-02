@@ -19,8 +19,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useQuestionPaperModal } from "@/components/admin/QuestionPaperModalContext";
 
 export default function AdminPapersPage() {
+  const { openAddQuestionPaper } = useQuestionPaperModal();
   const [papers, setPapers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
@@ -51,12 +53,13 @@ export default function AdminPapersPage() {
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">Question <span className="text-brand-blue">Papers</span></h1>
             <p className="text-slate-500 font-medium">Manage and organize historical exam papers.</p>
           </div>
-          <Link 
-            href="/admin/papers/add"
+          <button
+            type="button"
+            onClick={() => openAddQuestionPaper()}
             className="flex items-center gap-2 px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl shadow-xl shadow-slate-900/10 active:scale-95 transition-transform"
           >
             <Plus size={20} className="text-brand-blue" /> Upload New Paper
-          </Link>
+          </button>
         </header>
 
         {/* Search & Filters */}
