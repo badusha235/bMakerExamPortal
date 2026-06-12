@@ -1,5 +1,4 @@
 import Navbar from "@/components/layout/Navbar";
-import HomeWelcomeStrip from "@/components/home/HomeWelcomeStrip";
 import ExamCategories from "@/components/home/ExamCategories";
 import Notifications from "@/components/home/Notifications";
 import StudyMaterials from "@/components/home/StudyMaterials";
@@ -23,7 +22,6 @@ export default function HomePage() {
         <Navbar />
 
         <div className="pt-24 md:pt-28">
-          <HomeWelcomeStrip />
           <ExamCategories />
           <div className="mx-3 rounded-[2rem] bg-white/80 py-2 shadow-sm ring-2 ring-white/80 backdrop-blur-sm md:mx-6">
             <Notifications />
